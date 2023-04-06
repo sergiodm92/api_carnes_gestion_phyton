@@ -1,9 +1,21 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from typing import List
 
 class User(BaseModel):
     name: str
     password: str
+
+    @validator('name')
+    def name_length(cls, v):
+        if len(v) < 6 or len(v) > 255:
+            raise ValueError('El nombre debe tener entre 6 y 255 caracteres')
+        return v
+
+    @validator('password')
+    def password_length(cls, v):
+        if len(v) < 6 or len(v) > 1024:
+            raise ValueError('La contraseña debe tener entre 6 y 1024 caracteres')
+        return v
 
 class Proveedor(BaseModel):
     id: str

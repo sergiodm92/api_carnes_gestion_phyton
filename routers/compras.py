@@ -1,12 +1,14 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from models import Compra_Vacas
 from services.compra_services import getCompras, createNewCompra
+from middlewares.verify_token import verify_token
+
 
 router = APIRouter()
 
 # Ruta GET para obtener todas las compras
 @router.get("/all")
-async def obtener_compras():
+async def obtener_compras(token_data = Depends(verify_token)):
     try:
         compras = await getCompras()
         return compras
@@ -17,7 +19,7 @@ async def obtener_compras():
 
 # Ruta POST para agregar una nueva compra
 @router.post("/")
-async def postCompra(compra: Compra_Vacas):
+async def postCompra(compra: Compra_Vacas,token_data = Depends(verify_token)):
     try:
         response = await createNewCompra(compra)
         if(response):
