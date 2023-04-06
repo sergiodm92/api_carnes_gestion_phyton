@@ -1,26 +1,14 @@
-from google.cloud import firestore
-from fastapi import APIRouter, HTTPException
-from google.cloud.exceptions import GoogleCloudError
-from models import Compra
-
-
-db =  firestore.Client.from_service_account_json('firebase.json')
+from fastapi import APIRouter, HTTPException, status
+from models import Compra_Vacas
+from services.compra_services import getCompras, createNewCompra
 
 router = APIRouter()
 
 # Ruta GET para obtener todas las compras
-
 @router.get("/all")
 async def obtener_compras():
     try:
-        compras = []
-        # Obtiene todos los documentos de la colección "compras"
-        docs = db.collection('compras').get()
-        for doc in docs:
-            # Convierte los datos del documento a un diccionario
-            compra = doc.to_dict()
-            # Agrega el diccionario a la lista de compras
-            compras.append(compra)
+        compras = await getCompras()
         return compras
     except Exception as e:
         print(e)
@@ -29,25 +17,13 @@ async def obtener_compras():
 
 # Ruta POST para agregar una nueva compra
 @router.post("/")
-async def createNewCompra(compra: Compra):
+async def postCompra(compra: Compra_Vacas):
     try:
-        # Crea el nuevo documento en Firestore con los datos de la compra
-        doc_ref = db.collection('compras').document(compra.id)
-        doc_ref.set({
-            'id': compra.id,
-            'monto': compra.monto,
-            'cantidad': compra.cantidad,
-            'proveedor': compra.proveedor,
-            'lugar': compra.lugar,
-            'kg': compra.kg,
-        })
-        
-        # Verifica que el documento se haya creado correctamente
-        doc_snapshot = doc_ref.get()
-        if doc_snapshot.exists:
-            return {"mensaje": "compra cargada con exito"}
-        else:
-            return {"mensaje": "error al cargar la compra"}
+        response = await createNewCompra(compra)
+        if(response):
+            return {"mensaje": "compra cargada exitosamente", "status": status.HTTP_200_OK} 
+        else: 
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Ocurrió un error y no se pudo cargar la compra")
     except Exception as e:
         print(e)
         return {"mensaje": "ocurrio un error con el servidor"}
@@ -63,7 +39,7 @@ compras = []
 
 @router.get("/sumar")
 async def sum():
-    suma = "sumar()"
+    suma = await sumar()
     return {"mensaje":suma}
 
 # Ruta DELETE para eliminar una compra por ID

@@ -7,7 +7,6 @@ app = FastAPI()
 app.include_router(compras_router, prefix="/compras", tags=["Compras"])
 
 
-
 # Ejecuta la aplicación FastAPI
 if __name__ == "__main__":
     import uvicorn
