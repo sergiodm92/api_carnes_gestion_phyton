@@ -53,7 +53,6 @@ class Grupo_Vacas(BaseModel):
     recupero: float
     rinde: float
     kg_promedio: float
-    
 
 class Compra_Vacas(BaseModel):
     id: str
@@ -72,7 +71,7 @@ class Compra_Vacas(BaseModel):
     costo_flete: float
     costo_hacienda_total: float
     costo_veps_unitario: float
-    grupos: List
+    grupos: List[Grupo_Vacas]
     saldo: float
 
 class Grupo_Cerdos(BaseModel):
@@ -168,18 +167,16 @@ class Venta_Achura(BaseModel):
 
 #Faena y detalle de faena
 
-# class Res_Vaca_Faena(BaseModel):
-#     categoria: str
-#     correlativo: str
-#     kg: float
-#     costo_kg: float
-#     cuartoD: float
-#     cuartoT: float
-#     stock: bool
-#     venta_id: str
+class Res_Vaca_Faena(BaseModel):
+    categoria: str
+    correlativo: str
+    kg: float
+    costo_kg: float
+    cuartoD: float
+    cuartoT: float
+    stock: bool
+    venta_id: str
 
-# class Detalle(BaseModel):
-#     res: List[Res_Vaca_Faena]
 
 class Faena(BaseModel):
     id: str
@@ -195,7 +192,7 @@ class Faena(BaseModel):
     costo_total: float
     kg_total: float
     saldo: float
-    detalle: List
+    detalle: List[Res_Vaca_Faena]
 
 # Pagos compra venta venta_achura faena
 
