@@ -1,23 +1,14 @@
-from models import Compra_Vacas
-from google.cloud.exceptions import GoogleCloudError
 from db import get_database
+from models import Compra_Vacas
 
 db = get_database()
 
 #crear una nueva compra
-async def createNewCompra(compra: Compra_Vacas):
+async def post_compra(compra: Compra_Vacas):
     try:
         # Crea el nuevo documento en Firestore con los datos de la compra
         doc_ref = db.collection('compras').document(compra.id)
-        doc_ref.set({
-            'id': compra.id,
-            'monto': compra.monto,
-            'cantidad': compra.cantidad,
-            'proveedor': compra.proveedor,
-            'lugar': compra.lugar,
-            'kg': compra.kg,
-        })
-        
+        doc_ref.set(compra.dict())
         # Verifica que el documento se haya creado correctamente
         doc_snapshot = doc_ref.get()
         if doc_snapshot.exists:
@@ -27,6 +18,7 @@ async def createNewCompra(compra: Compra_Vacas):
     except Exception as e:
         print(e)
         return False
+
 
 
 async def getCompras():
@@ -45,5 +37,3 @@ async def getCompras():
         return {'error': 'Ocurrió un error inesperado: {}'.format(e)}
 
 
-async def sumar():
-    return 2+5
