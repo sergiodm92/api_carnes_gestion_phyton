@@ -20,7 +20,6 @@ async def post_compra(compra: Compra_Vacas):
         return False
 
 
-
 async def getCompras():
     try:
         compras = []
