@@ -126,8 +126,9 @@ class Res_Vaca_Venta(BaseModel):
     total_media: str
     precio_kg: float
 
-class Venta_Vaca(BaseModel):
+class Venta_Vacas(BaseModel):
     id: str
+    type: str
     cantidad: int
     cliente: str
     fecha: int
@@ -145,7 +146,7 @@ class Res_Cerdo(BaseModel):
     costo_kg: float
     precio_kg: float
 
-class Venta_Cerdo(BaseModel):
+class Venta_Cerdos(BaseModel):
     id: str
     cantidad: int
     cliente: str
@@ -156,7 +157,7 @@ class Venta_Cerdo(BaseModel):
     total: float
     saldo: float
 
-class Venta_Achura(BaseModel):
+class Venta_Achuras(BaseModel):
     id:str
     cliente: str
     fecha: int
@@ -262,6 +263,15 @@ class Gasto_Transporte(BaseModel):
     imagen_comprobante: str
 
 class Gasto_Impositivo(BaseModel):
+    id: str
+    fecha: int
+    type: str
+    nota: str
+    total: float
+    forma_pago: str
+    imagen_comprobante: str 
+
+class Gasto_Administrativo(BaseModel):
     id: str
     fecha: int
     type: str

@@ -1,8 +1,14 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, Depends
 from models import Cliente
 from middlewares.response import custom_Response_Exito, custom_Response_Error
 from middlewares.verify_token import verify_token
-from services.clientes_proveedores_service import get_clientes, get_cliente, post_cliente, delete_cliente, update_cliente
+from services.clientes_proveedores_service import(
+    get_clientes,
+    get_cliente, 
+    post_cliente, 
+    delete_cliente, 
+    update_cliente
+)
 
 router = APIRouter()
 

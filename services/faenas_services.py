@@ -46,9 +46,9 @@ async def get_faena_tropa(tropa:str):
     except Exception as e:
         print(e)
         return {'error': 'Ocurrió un error inesperado: {}'.format(e)}
-    
-# Traer las faenas por frigorifico
 
+
+# Traer las faenas por frigorifico
 async def get_faena_frigorifico(frigorifico:str):
     try:
         faenas = []

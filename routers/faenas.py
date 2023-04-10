@@ -2,7 +2,14 @@ from fastapi import APIRouter, Depends
 from models import Faena
 from middlewares.response import custom_Response_Exito, custom_Response_Error
 from middlewares.verify_token import verify_token
-from services.faenas_services import post_faena, get_faenas, get_faena_tropa, get_faena_frigorifico,get_faena_saldo, delete_faena
+from services.faenas_services import( 
+    post_faena, 
+    get_faenas, 
+    get_faena_tropa, 
+    get_faena_frigorifico,
+    get_faena_saldo, 
+    delete_faena
+    )
 
 router = APIRouter()
 
@@ -16,7 +23,7 @@ async def create_faena(faena: Faena, token_data = Depends(verify_token)):
     except Exception as e:
         print(e)
         return custom_Response_Error(message="Ocurrió un error inesperado ",status_code=400)
-    
+
 
 # Ruta GET para obtener todas las Faenas
 @router.get("/all")
@@ -48,11 +55,11 @@ async def get_all_faenas_frigorifico(frigorifico:str,token_data = Depends(verify
     except Exception as e:
         print(e)
         return custom_Response_Error(message="Ocurrió un error inesperado ",status_code=400)
-    
+
 
 # Ruta que trae las faenas con saldo > 0
 @router.get("/saldo")
-async def get_all_faenas_frigorifico(token_data = Depends(verify_token)):
+async def get_all_faenas_saldo(token_data = Depends(verify_token)):
     try:
         faenas = await get_faena_saldo()
         return custom_Response_Exito(faenas)

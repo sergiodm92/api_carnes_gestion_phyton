@@ -5,6 +5,10 @@ from routers.clientes import router as clientes_router
 from routers.proveedores import router as proveedores_router
 from routers.faenas import router as faenas_router
 from routers.compras import router as compras_router
+from routers.ventas import router as ventas_router
+from routers.gastos import router as gastos_router
+
+
 
 app = FastAPI()
 
@@ -15,16 +19,15 @@ async def response_default():
     return custom_Response_Exito(response)
 
 
-# Registra el router de compras en la aplicación con un prefijo de ruta
+
 app.include_router(users_router, prefix="/user", tags=["User"])
-
 app.include_router(clientes_router, prefix="/clientes", tags=["Clientes"])
-
 app.include_router(proveedores_router, prefix="/proveedores", tags=["Proveedores"])
-
 app.include_router(faenas_router, prefix="/faenas", tags=["Faenas"])
-
 app.include_router(compras_router, prefix="/compras", tags=["Compras"])
+app.include_router(ventas_router, prefix="/ventas", tags=["Ventas"])
+app.include_router(gastos_router, prefix="/gastos", tags=["Gastos"])
+
 
 
 # Ejecuta la aplicación FastAPI
