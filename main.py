@@ -7,10 +7,21 @@ from routers.faenas import router as faenas_router
 from routers.compras import router as compras_router
 from routers.ventas import router as ventas_router
 from routers.gastos import router as gastos_router
+from routers.pagos import router as pagos_router
+from routers.stock import router as stock_router
 
 
 
-app = FastAPI()
+app = FastAPI(
+    title= "Gestion Carnes",
+    description= "API REST para gestion de carnes y analisis de datos",
+    version="3.0",
+      contact={
+        "name": "DRFullCode",
+        "url": "http://sergiodm.online/",
+        "email": "drfullcode@gmail.com",
+    },
+)
 
 
 @app.get(("/"),tags=["Default"])
@@ -27,6 +38,10 @@ app.include_router(faenas_router, prefix="/faenas", tags=["Faenas"])
 app.include_router(compras_router, prefix="/compras", tags=["Compras"])
 app.include_router(ventas_router, prefix="/ventas", tags=["Ventas"])
 app.include_router(gastos_router, prefix="/gastos", tags=["Gastos"])
+app.include_router(pagos_router, prefix="/pagos", tags=["Pagos"])
+app.include_router(stock_router, prefix="/stock", tags=["Stock"])
+
+
 
 
 

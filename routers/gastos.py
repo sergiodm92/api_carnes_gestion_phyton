@@ -12,157 +12,94 @@ from services.gastos_services import (
     post_gasto_transporte, 
     post_gasto_impositivo, 
     post_gasto_administrativo,
-    get_gasto_combustible, 
-    get_gasto_transporte, 
-    get_gasto_impositivo, 
-    get_gasto_administrativo,
-    delete_gasto_combustible, 
-    delete_gasto_transporte, 
-    delete_gasto_impositivo, 
-    delete_gasto_administrativo
+    get_gastos_type,
+    get_gasto_id,
+    delete_gasto, 
 )
 
 router = APIRouter()
 
 # Ruta POST para cargar una venta
 @router.post("/combustible")
-async def new_venta_vacas(gasto_combustible: Gasto_Combustible, token_data=Depends(verify_token)):
+async def new_gasto_combustible(gasto: Gasto_Combustible, token_data=Depends(verify_token)):
     try:
-        response = await post_gasto_combustible(gasto_combustible)
+        response = await post_gasto_combustible(gasto)
         if response:
-            return custom_Response_Exito(gasto_combustible)
+            return custom_Response_Exito(gasto)
+        else: custom_Response_Error(message="No se pudo cargar el gasto ", status_code=400)
 
     except Exception as e:
         print(e)
         return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
 
-# Ruta POST para cargar una venta
+# Ruta POST para cargar un gasto de transporte
 @router.post("/transporte")
-async def new_venta_vacas(gasto_transporte: Gasto_Transporte, token_data=Depends(verify_token)):
+async def new_gasto_transporte(gasto_transporte: Gasto_Transporte, token_data=Depends(verify_token)):
     try:
-        response = await post_gasto_transporte(gasto_combustible)
+        response = await post_gasto_transporte(gasto_transporte)
         if response:
-            return custom_Response_Exito(venta)
-
+            return custom_Response_Exito(gasto_transporte)
+        else: custom_Response_Error(message="No se pudo cargar el gasto ", status_code=400)
     except Exception as e:
         print(e)
         return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
 
-# Ruta POST para cargar una venta
+# Ruta POST para cargar un gasto impositivo
 @router.post("/impositivo")
-async def new_venta_vacas(gasto_combustible: Gasto_Impositivo, token_data=Depends(verify_token)):
+async def new_gasto_impositivo(gasto: Gasto_Impositivo, token_data=Depends(verify_token)):
     try:
-        response = await post_gasto_impositivo(gasto_combustible)
+        response = await post_gasto_impositivo(gasto)
         if response:
-            return custom_Response_Exito(venta)
+            return custom_Response_Exito(gasto)
+        else: custom_Response_Error(message="No se pudo cargar el gasto ", status_code=400)
+
+    except Exception as e:
+        print(e)
+        return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
+    
+# Ruta POST para cargar un gasto impositivo
+@router.post("/administrativo")
+async def new_gasto_administrativo(gasto: Gasto_Impositivo, token_data=Depends(verify_token)):
+    try:
+        response = await post_gasto_administrativo(gasto)
+        if response:
+            return custom_Response_Exito(gasto)
+        else: custom_Response_Error(message="No se pudo cargar el gasto ", status_code=400)
 
     except Exception as e:
         print(e)
         return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
 
-# Ruta POST para cargar una venta
-@router.post("/impositivo")
-async def new_venta_vacas(gasto_combustible: Gasto_Administrativo, token_data=Depends(verify_token)):
+# Ruta para traer todos los gastos de combustible
+@router.get("/{type}", description="El type debe ser (combustible, transporte, administrativo o impositivo)")
+async def gastos_type(type:str, token_data=Depends(verify_token)):
     try:
-        response = await post_gasto_administrativo(gasto_combustible)
+        response = await get_gastos_type(type)
         if response:
-            return custom_Response_Exito(venta)
-
+            return custom_Response_Exito(response)
     except Exception as e:
         print(e)
         return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
 
-# Ruta POST para cargar una venta
-@router.get("/combustible")
-async def new_venta_vacas(gasto_combustible: Gasto_Combustible, token_data=Depends(verify_token)):
+# Traer un gasto  por ID
+@router.get("/{id}")
+async def gasto_id(id: str, token_data=Depends(verify_token)):
     try:
-        response = await get_gasto_combustible(gasto_combustible)
+        response = await get_gasto_id(id)
         if response:
-            return custom_Response_Exito(venta)
-
+            return custom_Response_Exito(response)
     except Exception as e:
         print(e)
         return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
 
-# Ruta POST para cargar una venta
-@router.get("/transporte")
-async def new_venta_vacas(gasto_combustible: Gasto_Transporte, token_data=Depends(verify_token)):
+@router.delete("/{id}")
+async def delete_gasto_id(id:str, token_data=Depends(verify_token)):
     try:
-        response = await get_gasto_transporte(gasto_combustible)
+        response = await delete_gasto(id)
         if response:
-            return custom_Response_Exito(venta)
-
+            messege = {"messege":"se elimino el gasto con id {id}"}
+            return custom_Response_Exito(messege)
     except Exception as e:
         print(e)
         return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
 
-# Ruta POST para cargar una venta
-@router.get("/impositivo")
-async def new_venta_vacas(gasto_combustible: Gasto_Impositivo, token_data=Depends(verify_token)):
-    try:
-        response = await get_gasto_impositivo(gasto_combustible)
-        if response:
-            return custom_Response_Exito(venta)
-
-    except Exception as e:
-        print(e)
-        return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
-
-# Ruta POST para cargar una venta
-@router.get("/administrativo")
-async def new_venta_vacas(gasto_combustible: Gasto_Administrativo, token_data=Depends(verify_token)):
-    try:
-        response = await get_gasto_administrativo(gasto_combustible)
-        if response:
-            return custom_Response_Exito(venta)
-
-    except Exception as e:
-        print(e)
-        return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
-
-@router.delete("/combustible")
-async def new_venta_vacas(gasto_combustible: Gasto_Combustible, token_data=Depends(verify_token)):
-    try:
-        response = await delete_gasto_combustible(gasto_combustible)
-        if response:
-            return custom_Response_Exito(venta)
-
-    except Exception as e:
-        print(e)
-        return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
-
-# Ruta POST para cargar una venta
-@router.delete("/transporte")
-async def new_venta_vacas(gasto_combustible: Gasto_Combustible, token_data=Depends(verify_token)):
-    try:
-        response = await delete_gasto_transporte(gasto_combustible)
-        if response:
-            return custom_Response_Exito(venta)
-
-    except Exception as e:
-        print(e)
-        return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
-
-# Ruta POST para cargar una venta
-@router.delete("/impositivo")
-async def new_venta_vacas(gasto_impositivo: Gasto_Impositivo, token_data=Depends(verify_token)):
-    try:
-        response = await delete_gasto_impositivo(gasto_impositivo)
-        if response:
-            return custom_Response_Exito(venta)
-
-    except Exception as e:
-        print(e)
-        return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)
-
-# Ruta POST para cargar una venta
-@router.delete("/administrativo")
-async def new_venta_vacas(gasto_combustible: Gasto_Administrativo, token_data=Depends(verify_token)):
-    try:
-        response = await delete_gasto_administrativo(gasto_combustible)
-        if response:
-            return custom_Response_Exito(venta)
-
-    except Exception as e:
-        print(e)
-        return custom_Response_Error(message="Ocurrió un error inesperado ", status_code=400)

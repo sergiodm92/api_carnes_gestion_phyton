@@ -1,5 +1,6 @@
 from pydantic import BaseModel, validator
 from typing import List
+from typing import Optional
 
 class User(BaseModel):
     name: str
@@ -173,8 +174,8 @@ class Res_Vaca_Faena(BaseModel):
     correlativo: str
     kg: float
     costo_kg: float
-    cuartoD: float
-    cuartoT: float
+    cuartoD: Optional[float] = None
+    cuartoT: Optional[float] = None
     stock: bool
     venta_id: str
 
@@ -192,37 +193,22 @@ class Faena(BaseModel):
     costo_faena_kg: float
     costo_total: float
     kg_total: float
+    kg_stock: float
     saldo: float
     detalle: List[Res_Vaca_Faena]
 
 # Pagos compra venta venta_achura faena
 
-class Pago_Compra(BaseModel):
+class Pago(BaseModel):
     id: str
+    type: str
     fecha:int
-    proveedor: str
+    contraparte: str
     forma_pago: str
-    compra_id: str
-    imagen_comprobante: str
+    transaccion_id: str
+    imagen_comprobante: Optional[str] = None
     total: float
 
-class Pago_Venta(BaseModel):
-    id: str
-    fecha:int
-    cliente: str
-    forma_pago: str
-    venta_id: str
-    imagen_comprobante: str
-    total: float
-
-class Pago_Faena(BaseModel):
-    id: str
-    fecha:int
-    frigorifico: str
-    forma_pago: str
-    faena_id: str
-    imagen_comprobante: str
-    total: float
 
 class Ingreso_Extra(BaseModel):
     id:str
@@ -246,8 +232,9 @@ class Caja(BaseModel):
 
 class Gasto_Combustible(BaseModel):
     id: str
-    fecha: int
     type: str
+    fecha: int
+    combustible: str
     litros: float
     precio_litro: float
     total: float
@@ -256,6 +243,7 @@ class Gasto_Combustible(BaseModel):
 
 class Gasto_Transporte(BaseModel):
     id: str
+    type: str
     fecha: int
     concepto: str
     total: float
@@ -264,8 +252,9 @@ class Gasto_Transporte(BaseModel):
 
 class Gasto_Impositivo(BaseModel):
     id: str
-    fecha: int
     type: str
+    fecha: int
+    tipo: str
     nota: str
     total: float
     forma_pago: str
@@ -273,8 +262,9 @@ class Gasto_Impositivo(BaseModel):
 
 class Gasto_Administrativo(BaseModel):
     id: str
-    fecha: int
     type: str
+    fecha: int
+    tipo: str
     nota: str
     total: float
     forma_pago: str
