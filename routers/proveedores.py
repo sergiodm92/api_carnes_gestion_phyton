@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, Depends
 from models import Proveedor
 from middlewares.response import custom_Response_Exito, custom_Response_Error
 from middlewares.verify_token import verify_token
-from services.clientes_proveedores_service import (
+from services.clientes_proveedores_services import (
     get_proveedores,
     get_proveedor, 
     post_proveedor, 

@@ -9,6 +9,8 @@ from routers.ventas import router as ventas_router
 from routers.gastos import router as gastos_router
 from routers.pagos import router as pagos_router
 from routers.stock import router as stock_router
+from routers.caja import router as caja_router
+
 
 
 
@@ -40,6 +42,8 @@ app.include_router(ventas_router, prefix="/ventas", tags=["Ventas"])
 app.include_router(gastos_router, prefix="/gastos", tags=["Gastos"])
 app.include_router(pagos_router, prefix="/pagos", tags=["Pagos"])
 app.include_router(stock_router, prefix="/stock", tags=["Stock"])
+app.include_router(caja_router, prefix="/stock", tags=["Caja"])
+
 
 
 

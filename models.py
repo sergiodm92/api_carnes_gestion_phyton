@@ -169,7 +169,7 @@ class Venta_Achuras(BaseModel):
 
 #Faena y detalle de faena
 
-class Res_Vaca_Faena(BaseModel):
+class Res_Faena(BaseModel):
     categoria: str
     correlativo: str
     kg: float
@@ -195,10 +195,10 @@ class Faena(BaseModel):
     kg_total: float
     kg_stock: float
     saldo: float
-    detalle: List[Res_Vaca_Faena]
+    detalle: List[Res_Faena]
+
 
 # Pagos compra venta venta_achura faena
-
 class Pago(BaseModel):
     id: str
     type: str

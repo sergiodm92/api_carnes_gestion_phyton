@@ -17,8 +17,7 @@ async def get_faenas_stock():
     try:
         faenas_stock_true = []
         # Obtiene todos los documentos de la colección "ventas"
-        docs = db.collection('faenas').where('kg_stock', '>', 0).stream()
-        # docs = db.collection('faenas').where('saldo', '>', 0).get()
+        docs = db.collection('faenas').where('kg_stock', '>', 0).get()
         for doc in docs:
             # Convierte los datos del documento a un diccionario
             faena = doc.to_dict()
