@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from routers.users import router as users_router
 from middlewares.response import custom_Response_Exito
+from fastapi.middleware.cors import CORSMiddleware
 from routers.clientes import router as clientes_router
 from routers.proveedores import router as proveedores_router
 from routers.faenas import router as faenas_router
@@ -10,28 +11,38 @@ from routers.gastos import router as gastos_router
 from routers.pagos import router as pagos_router
 from routers.stock import router as stock_router
 from routers.caja import router as caja_router
-
-
-
+from routers.alertas import router as alertas_router
 
 app = FastAPI(
     title= "Gestion Carnes",
     description= "API REST para gestion de carnes y analisis de datos",
     version="3.0",
-      contact={
+    contact={
         "name": "DRFullCode",
         "url": "http://sergiodm.online/",
         "email": "drfullcode@gmail.com",
     },
 )
 
+# Configurar CORS
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "https://xv-invitation-front.vercel.app"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get(("/"),tags=["Default"])
 async def response_default():
     response = {"message": "API en funcionamiento"}
     return custom_Response_Exito(response)
-
-
 
 app.include_router(users_router, prefix="/user", tags=["User"])
 app.include_router(clientes_router, prefix="/clientes", tags=["Clientes"])
@@ -43,10 +54,7 @@ app.include_router(gastos_router, prefix="/gastos", tags=["Gastos"])
 app.include_router(pagos_router, prefix="/pagos", tags=["Pagos"])
 app.include_router(stock_router, prefix="/stock", tags=["Stock"])
 app.include_router(caja_router, prefix="/stock", tags=["Caja"])
-
-
-
-
+app.include_router(alertas_router, prefix="/alertas", tags=["Alertas"])
 
 
 # Ejecuta la aplicación FastAPI

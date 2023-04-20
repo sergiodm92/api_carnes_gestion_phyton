@@ -7,7 +7,8 @@ from services.faenas_services import(
     get_faenas, 
     get_faena_tropa, 
     get_faena_frigorifico,
-    get_faena_saldo, 
+    get_faena_saldo,
+    get_faenas_stock, 
     delete_faena
     )
 
@@ -35,6 +36,15 @@ async def get_all_faenas(token_data = Depends(verify_token)):
         print(e)
         return custom_Response_Error(message="Ocurrió un error inesperado ",status_code=400)
 
+# Ruta GET para obtener todas las Faenas
+@router.get("/stock")
+async def faenas_stock(token_data = Depends(verify_token)):
+    try:
+        faenas = await get_faenas_stock()
+        return custom_Response_Exito(faenas)
+    except Exception as e:
+        print(e)
+        return custom_Response_Error(message="Ocurrió un error inesperado ",status_code=400)
 
 # Ruta GET para obtener una Faenas por N de tropa por params
 @router.get("/tropa/{tropa}")

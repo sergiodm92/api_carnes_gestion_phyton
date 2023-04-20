@@ -31,54 +31,43 @@ async def get_faenas_stock():
 
 # Calcular Stock
 def sumar_stock(faenas_stock):
-    total_kg_vaca = 0
-    vaquillona = 0
-    vaca = 0
-    novillito = 0
-    toro = 0
-    novillo_pesado = 0
-    total_kg_cerdo = 0
-    capon = 0
-    chancha = 0
+    stock = {
+        'total_kg_vaca' : {'kg':0},
+        'total_kg_cerdo' : {'kg':0},
+        'vaquillona' : {'res':0,'cuartoD':0,'cuartoT':0, 'kg':0},
+        'vaca' : {'res':0,'cuartoD':0,'cuartoT':0, 'kg':0},
+        'novillito' : {'res':0,'cuartoD':0,'cuartoT':0, 'kg':0},
+        'toro' : {'res':0,'cuartoD':0,'cuartoT':0, 'kg':0},
+        'novillo_pesado' : {'res':0,'cuartoD':0,'cuartoT':0, 'kg':0},
+        'capon' : {'res':0,'cuartoD':0,'cuartoT':0, 'kg':0},
+        'chancha' : {'res':0,'cuartoD':0,'cuartoT':0, 'kg':0},
+    }
     
     for faena in faenas_stock:
-        if faena['type'] == 'vaca':
-            for res in faena['detalle']:
-                categoria = res['categoria']
-                kg = res['kg']
-                if categoria == 'vaquillona':
-                    vaquillona += 1
-                elif categoria == 'Vaca':
-                    vaca += 1
-                elif categoria == 'novillito':
-                    novillito += 1
-                elif categoria == 'toro':
-                    toro += 1
-                elif categoria == 'novillo Pesado':
-                    novillo_pesado += 1
-                total_kg_vaca += kg
-        elif faena['type'] == 'cerdo':
-            for res in faena['detalle']:
-                categoria = res['categoria']
-                kg = res['kg']
-                
-                if categoria == 'capon':
-                    capon += 1
-                elif categoria == 'chancha':
-                    chancha += 1
-                
-                total_kg_cerdo += kg
-    return {
-        'vaquillona': vaquillona,
-        'vaca': vaca,
-        'novillito': novillito,
-        'toro': toro,
-        'novillo pesado': novillo_pesado,
-        'total kg vaca': total_kg_vaca,
-        'capon': capon,
-        'chancha': chancha,
-        'total kg cerdo': total_kg_cerdo
-    }
-
+        for res in faena['detalle']:
+            categoria = res['categoria']
+            cuartoT = res['cuartoT'] 
+            cuartoD = res['cuartoD'] 
+            kg = res['kg']
+            if cuartoT==0 & cuartoD==0: 
+                stock[categoria]['res']+= 1
+                stock[categoria]['kg']+= kg
+                if faena['type']=='vaca': 
+                    stock['total_kg_vaca']['kg']+=kg
+                if faena['type']=='cerdo': 
+                    stock['total_kg_cerdo']['kg']+=kg
+            if cuartoD > 0:
+                stock[categoria]['cuartoD']+= 1
+                stock[categoria]['kg']+= cuartoD
+                if faena['type']=='vaca': 
+                    stock['total_kg_vaca']['kg']+=cuartoD
+                else: stock['total_kg_cerdo']['kg']+=cuartoD
+            if cuartoT > 0:
+                stock[categoria]['cuartoT']+= 1
+                stock[categoria]['kg']+= cuartoT
+                if faena['type']=='vaca': 
+                    stock['total_kg_vaca']['kg']+=cuartoT
+                else: stock['total_kg_cerdo']['kg']+=cuartoT
+    return stock
 
 

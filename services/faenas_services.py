@@ -82,6 +82,22 @@ async def get_faena_saldo():
         return {'error': 'Ocurrió un error inesperado: {}'.format(e)}
 
 
+async def get_faenas_stock():
+    try:
+        faenas = []
+        # Obtiene la faena por tropa
+        docs = db.collection('faenas').where('kg_stock','>',0).get()
+        for doc in docs:
+            # Convierte los datos del documento a un diccionario
+            faena = doc.to_dict()
+            # Agrega el diccionario a la lista de compras
+            faenas.append(faena)
+        return faenas
+    except Exception as e:
+        print(e)
+        return {'error': 'Ocurrió un error inesperado: {}'.format(e)}
+
+
 # Eliminar una faena por tropa
 async def delete_faena(tropa:str):
     try:

@@ -1,6 +1,6 @@
 from db import get_database
 from models import  Pago
-from caja_services import post_caja
+# from caja_services import post_caja
 
 db = get_database()
 
@@ -13,7 +13,7 @@ async def post_pago(pago: Pago):
         # Verifica que el documento se haya creado correctamente
         doc_snapshot = doc_ref.get()
         if doc_snapshot.exists:
-            post_caja(pago.dict())
+            # post_caja(pago.dict())
             return True
         else:
             return False

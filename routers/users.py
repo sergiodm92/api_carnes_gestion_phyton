@@ -5,7 +5,6 @@ from models import User
 
 router = APIRouter()
 
-
 @router.post('/login')
 async def login(user: User):
     try:
@@ -17,7 +16,6 @@ async def login(user: User):
             return custom_Response_Error(message="No se pudo inicias sesion...", status_code=400)
     except Exception as e:
         return custom_Response_Error(message="Error del servidor...", status_code=500)
-
 
 @router.post('/register')
 async def register(user: User):
